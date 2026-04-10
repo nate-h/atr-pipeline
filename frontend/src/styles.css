@@ -844,7 +844,7 @@ pre {
   display: flex;
   justify-content: space-between;
   gap: 6px;
-  align-items: center;
+  align-items: flex-start;
   min-width: 0;
   padding: 5px 6px;
   border-radius: 8px;
@@ -859,9 +859,13 @@ pre {
 .annotator-box-row strong,
 .annotator-box-row .mono {
   display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.annotator-box-row .mono {
+  font-size: 0.72rem;
+  line-height: 1.35;
 }
 
 .annotator-box-row .button {

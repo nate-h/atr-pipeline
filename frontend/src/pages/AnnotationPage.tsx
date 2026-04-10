@@ -25,11 +25,6 @@ export function AnnotationPage() {
   const [isDirty, setIsDirty] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const infoQuery = useQuery({
-    queryKey: ["annotation-info"],
-    queryFn: apiClient.getAnnotationInfo,
-  });
-
   const imagesQuery = useQuery({
     queryKey: ["annotation-images", split],
     queryFn: () => apiClient.getAnnotationImages(split),
@@ -120,36 +115,6 @@ export function AnnotationPage() {
         title="Native YOLO box annotator"
         description="Draw ship bounding boxes directly in the workbench. Saving writes YOLO labels straight into the dataset split."
       />
-
-      <section className="card">
-        <h3>How annotation works</h3>
-        {infoQuery.isLoading ? (
-          <p className="muted">Loading annotation guidance...</p>
-        ) : null}
-        {infoQuery.data ? (
-          <>
-            <dl className="key-values">
-              <div>
-                <dt>Annotator mode</dt>
-                <dd>{infoQuery.data.mode}</dd>
-              </div>
-              <div>
-                <dt>Dataset root</dt>
-                <dd className="mono">{infoQuery.data.dataset_root}</dd>
-              </div>
-              <div>
-                <dt>Classes</dt>
-                <dd>{infoQuery.data.classes.join(", ")}</dd>
-              </div>
-            </dl>
-            <ol className="ordered-list">
-              {infoQuery.data.instructions.map((instruction) => (
-                <li key={instruction}>{instruction}</li>
-              ))}
-            </ol>
-          </>
-        ) : null}
-      </section>
 
       <section className="card">
         <SectionHeader
