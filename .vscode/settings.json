@@ -1,0 +1,14 @@
+{
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true
+  },
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true
+  }
+}

@@ -1,0 +1,11 @@
+.git
+.venv
+__pycache__
+frontend/node_modules
+frontend/dist
+backend/.mypy_cache
+backend/.ruff_cache
+artifacts
+mlruns
+data
+

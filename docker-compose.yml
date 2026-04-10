@@ -1,0 +1,82 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-atr_workbench}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-atr_workbench}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mlflow:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    working_dir: /app/backend
+    environment:
+      MLFLOW_BACKEND_STORE_URI: ${MLFLOW_BACKEND_STORE_URI:-sqlite:////mlflow-artifacts/mlflow.db}
+      MLFLOW_SERVER_ALLOWED_HOSTS: ${MLFLOW_SERVER_ALLOWED_HOSTS:-localhost:*,127.0.0.1:*,mlflow:5000}
+      MLFLOW_SERVER_CORS_ALLOWED_ORIGINS: ${MLFLOW_SERVER_CORS_ALLOWED_ORIGINS:-http://localhost:5001,http://127.0.0.1:5001,http://localhost:5173,http://127.0.0.1:5173}
+    command: ["/bin/sh", "/app/docker/mlflow-start.sh"]
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./backend:/app/backend
+      - ./docker:/app/docker
+      - ./mlruns:/mlflow-artifacts
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    working_dir: /app/backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://postgres:postgres@db:5432/atr_workbench}
+      DATASET_ROOT: /app/data/ships-aerial-images
+      DATASET_YAML_PATH: /app/data/ships-aerial-images/data.yaml
+      ARTIFACTS_ROOT: /app/artifacts
+      MLFLOW_TRACKING_URI: ${MLFLOW_TRACKING_URI:-http://mlflow:5000}
+      YOLO_CONFIG_DIR: /tmp/Ultralytics
+    command: ["/bin/sh", "/app/docker/backend-start.sh"]
+    depends_on:
+      db:
+        condition: service_healthy
+      mlflow:
+        condition: service_started
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+      - ./docker:/app/docker
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    working_dir: /app/frontend
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000/api}
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app/frontend
+      - frontend-node-modules:/app/frontend/node_modules
+
+volumes:
+  postgres-data:
+  frontend-node-modules:
