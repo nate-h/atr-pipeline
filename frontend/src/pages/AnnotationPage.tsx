@@ -21,6 +21,7 @@ export function AnnotationPage() {
   const [selectedImageName, setSelectedImageName] = useState<string>("");
   const [boxes, setBoxes] = useState<AnnotationBox[]>([]);
   const [draftBox, setDraftBox] = useState<DraftBox | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
@@ -79,6 +80,7 @@ export function AnnotationPage() {
     if (!imageDetailQuery.data) {
       return;
     }
+    setImageLoaded(false);
     setBoxes(imageDetailQuery.data.boxes);
     setDraftBox(null);
     setIsDirty(false);
@@ -265,14 +267,23 @@ export function AnnotationPage() {
               <>
                 <div className="annotator-stage">
                   <img
+                    key={imageDetailQuery.data.image_url}
                     className="annotator-image"
                     src={`${appConfig.backendOrigin}${imageDetailQuery.data.image_url}`}
                     alt={imageDetailQuery.data.image_name}
                     draggable={false}
+                    onLoad={() => setImageLoaded(true)}
                   />
                   <div
-                    className="annotator-overlay"
+                    className={
+                      imageLoaded
+                        ? "annotator-overlay"
+                        : "annotator-overlay loading"
+                    }
                     onPointerDown={(event) => {
+                      if (!imageLoaded) {
+                        return;
+                      }
                       const point = getNormalizedPoint(event);
                       if (!point) {
                         return;
@@ -286,6 +297,9 @@ export function AnnotationPage() {
                       });
                     }}
                     onPointerMove={(event) => {
+                      if (!imageLoaded) {
+                        return;
+                      }
                       if (!draftBox) {
                         return;
                       }
@@ -300,6 +314,9 @@ export function AnnotationPage() {
                       );
                     }}
                     onPointerUp={(event) => {
+                      if (!imageLoaded) {
+                        return;
+                      }
                       if (!draftBox) {
                         return;
                       }
