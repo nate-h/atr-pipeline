@@ -33,7 +33,7 @@ mlruns/
 *.tar.gz
 *.h5
 *.hdf5
-data/
+# data/ - yes.... this is intentional for repeatability
 
 # Kaggle cache
 .cache/
