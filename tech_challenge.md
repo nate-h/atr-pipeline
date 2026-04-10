@@ -19,3 +19,4 @@
 - Improve typing
 - Could have better logging
 - Add test and exercise in CI
+- The examples on the eval page should show predicted vs actual overlaid on same image
