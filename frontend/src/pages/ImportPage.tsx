@@ -50,6 +50,11 @@ export function ImportPage() {
       />
 
       <section className="card">
+        <SectionHeader
+          title="How the split works"
+          description="Each image is hashed from its file bytes, then placed into one of the dataset folders: train for the first 70%, valid for the next 15%, and test for the final 15%. Empty YOLO label files are created so the images appear in the annotator, but boxes still need to be drawn or imported separately."
+        />
+
         <div className="form-grid two-up">
           <label>
             <span>Zip archive</span>

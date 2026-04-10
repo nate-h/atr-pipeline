@@ -34,6 +34,16 @@ The app now includes a lightweight in-browser box annotator for the local datase
 4. Save to write YOLO `.txt` labels into the matching split label folder.
 5. Optionally import an existing YOLO label archive if labels were created elsewhere.
 
+## Image import workflow
+
+The Import page accepts a `.zip` archive or a browser folder upload of image files. Uploaded images are automatically placed into one of the dataset split folders:
+
+- `train/images`: first 70% of the deterministic hash bucket.
+- `valid/images`: next 15% of the deterministic hash bucket.
+- `test/images`: final 15% of the deterministic hash bucket.
+
+The bucket is computed from a SHA-256 hash of the image file bytes, so the same image lands in the same split every time. The importer also creates an empty YOLO `.txt` label file in the matching `labels` folder so the image shows up in the annotation workflow. It does not auto-generate ship boxes; boxes still need to be drawn in the annotator or imported from an existing YOLO label export.
+
 ### How YOLO-format labels are preserved
 
 - The dataset under `data/ships-aerial-images` remains the source of truth.
