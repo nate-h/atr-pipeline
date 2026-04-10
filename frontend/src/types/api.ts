@@ -38,6 +38,22 @@ export interface DatasetValidation {
   splits: SplitValidation[];
 }
 
+export interface ImportedDatasetImage {
+  original_name: string;
+  saved_name: string;
+  split: "train" | "valid" | "test";
+  image_path: string;
+  label_path: string;
+}
+
+export interface DatasetImageImportResponse {
+  imported_count: number;
+  skipped_count: number;
+  split_counts: Record<"train" | "valid" | "test", number>;
+  imported_images: ImportedDatasetImage[];
+  skipped_files: string[];
+}
+
 export interface DashboardRunSummary {
   id: string;
   status: RunStatus;

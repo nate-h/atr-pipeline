@@ -6,6 +6,7 @@ import type {
   AnnotationSavePayload,
   AnnotationSaveResponse,
   AnnotationSyncResponse,
+  DatasetImageImportResponse,
   DatasetSummary,
   DatasetValidation,
   EvaluationRunDetail,
@@ -27,6 +28,11 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
 export const apiClient = {
   getDatasetSummary: () => apiFetch<DatasetSummary>("/dataset/summary"),
   getDatasetValidation: () => apiFetch<DatasetValidation>("/dataset/validate"),
+  importDatasetImages: (formData: FormData) =>
+    apiFetch<DatasetImageImportResponse>("/dataset/import-images", {
+      method: "POST",
+      body: formData,
+    }),
   getAnnotationInfo: () => apiFetch<AnnotationInfo>("/annotation/info"),
   getAnnotationImages: (split: "train" | "valid" | "test") =>
     apiFetch<AnnotationImageListResponse>(`/annotation/images?split=${split}`),

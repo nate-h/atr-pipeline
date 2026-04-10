@@ -41,3 +41,19 @@ class DatasetValidationResponse(BaseModel):
     classes: list[str]
     warnings: list[str]
     splits: list[SplitValidation]
+
+
+class ImportedDatasetImage(BaseModel):
+    original_name: str
+    saved_name: str
+    split: str
+    image_path: str
+    label_path: str
+
+
+class DatasetImageImportResponse(BaseModel):
+    imported_count: int
+    skipped_count: int
+    split_counts: dict[str, int]
+    imported_images: list[ImportedDatasetImage]
+    skipped_files: list[str]

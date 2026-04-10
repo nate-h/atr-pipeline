@@ -5,6 +5,7 @@ A small, dockerized ATR workbench for managing ship-detection workflows against 
 ## What it does
 
 - Inspects the local dataset and validates split integrity.
+- Imports new image batches from a zip or browser folder upload into deterministic train/valid/test splits.
 - Surfaces an in-app bounding-box annotation workflow that saves YOLO labels directly.
 - Starts YOLOv8 training runs in the background from the FastAPI backend.
 - Stores run metadata in PostgreSQL and logs metrics into MLflow.
@@ -50,6 +51,7 @@ docker compose up --build
 ```
 
 3. Open:
+
 - Frontend: `http://localhost:5173`
 - Backend API docs: `http://localhost:8000/docs`
 - MLflow: `http://localhost:5001`
@@ -59,10 +61,11 @@ MLflow is configured to allow both local browser access and Docker-internal acce
 ## Happy-path workflow
 
 1. Open the Dashboard or Dataset page to inspect split counts and validation warnings.
-2. Open the Annotation page to create or edit YOLO labels directly in the browser.
-3. Start a training run from the Training page.
-4. Review run history and artifact locations on the Runs page.
-5. Launch evaluation on a completed training run and inspect metrics and prediction images on the Evaluation page.
+2. Open the Import page to add new images from a zip or folder upload.
+3. Open the Annotation page to create or edit YOLO labels directly in the browser.
+4. Start a training run from the Training page.
+5. Review run history and artifact locations on the Runs page.
+6. Launch evaluation on a completed training run and inspect metrics and prediction images on the Evaluation page.
 
 ## Linting and type checking
 
@@ -80,6 +83,7 @@ make frontend-typecheck
 - `GET /api/health`
 - `GET /api/dataset/summary`
 - `GET /api/dataset/validate`
+- `POST /api/dataset/import-images`
 - `GET /api/annotation/info`
 - `POST /api/annotation/sync`
 - `POST /api/training/runs`

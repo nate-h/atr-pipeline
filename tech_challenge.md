@@ -12,11 +12,10 @@
 
 # Things I didn't get to
 
-- Some automation around auto generated annotations that users can sign off on
+- Add automation around auto generated annotations that users can sign off on
     - I don't know how I feel about this but can help speed up things
-- User auth
-- didn't get to what ingesting the customers data would look like
-- adding tests
-- Remove more typing.anys
-- could have better logging
-- missing CI tests
+- User authentication
+- Haven't yet validated ingesting data
+- Improve typing
+- Could have better logging
+- Add test and exercise in CI

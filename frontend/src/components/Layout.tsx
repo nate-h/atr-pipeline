@@ -5,6 +5,7 @@ const navigation = [
   { to: "/", label: "Dashboard" },
   { to: "/dataset", label: "Dataset" },
   { to: "/annotation", label: "Annotation" },
+  { to: "/import", label: "Import" },
   { to: "/training", label: "Training" },
   { to: "/runs", label: "Runs" },
   { to: "/evaluation", label: "Evaluation" },

@@ -4,6 +4,7 @@ import { AnnotationPage } from "./pages/AnnotationPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { DatasetPage } from "./pages/DatasetPage";
 import { EvaluationPage } from "./pages/EvaluationPage";
+import { ImportPage } from "./pages/ImportPage";
 import { RunsPage } from "./pages/RunsPage";
 import { TrainingPage } from "./pages/TrainingPage";
 
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/" element={<DashboardPage />} />
         <Route path="/dataset" element={<DatasetPage />} />
         <Route path="/annotation" element={<AnnotationPage />} />
+        <Route path="/import" element={<ImportPage />} />
         <Route path="/training" element={<TrainingPage />} />
         <Route path="/runs" element={<RunsPage />} />
         <Route path="/evaluation" element={<EvaluationPage />} />
